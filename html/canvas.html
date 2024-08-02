@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Watermark</title>
+</head>
+    <body>
+        <canvas id="canvas"></canvas>
+    </body>
+    <script>
+        function drawWaterPrint() {
+            const canvas = document.getElementById('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+
+            canvas.style.display = 'none';
+            const ctx = canvas.getContext('2d');//获取2d上下文
+            ctx.font = '20px Arial';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.rotate(-45 * Math.PI / 180);
+            ctx.fillText('Watermark', canvas.width / 8, canvas.height / 4);
+            const img = canvas.toDataURL('image/png');
+            const style = 'background-image: url(' + img + ');background-repeat: repeat;';
+            waterWrapper.setAttribute('style', style);
+        }
+        drawWaterPrint();
+        function callback() {
+            console.log('DOM changed');
+        }
+        const observer = new MutationObserver(callback);
+        const tartgetNode = waterWrapper;
+        const config = { attributes: true };
+        observer.observe(tartgetNode, config);
+    </script>
+</html>

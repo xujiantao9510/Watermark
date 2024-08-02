@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* 页面内容样式 */
+        .content {
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .table-container {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* 水印样式 */
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999; /* 设置较高的层级 */
+            pointer-events: none; /* 使该元素“可穿透” */
+            background-repeat: repeat;
+            opacity: 0.1; /* 设置透明度 */
+        }
+    </style>
+    <title>Dynamic Watermark</title>
+</head>
+<body>
+    <!-- 页面内容部分 -->
+    <div class="content">
+        <h1>文章标题</h1>
+        <p>这是一篇示例文章，展示如何使用 Canvas 动态生成用户信息的水印。</p>
+        <p>水印可以帮助支持溯源，防止内容被未经授权的复制和分发。</p>
+    </div>
+
+    <!-- 表格部分 -->
+    <div class="table-container">
+        <h2>示例表格</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>列1</th>
+                    <th>列2</th>
+                    <th>列3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>数据1</td>
+                    <td>数据2</td>
+                    <td>数据3</td>
+                </tr>
+                <tr>
+                    <td>数据4</td>
+                    <td>数据5</td>
+                    <td>数据6</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 水印层 -->
+    <div id="watermark" class="watermark"></div>
+
+    <script>
+        // 动态生成水印
+        function generateWatermark(userInfo) {
+            // 创建 canvas 元素
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            const ctx = canvas.getContext('2d');
+
+            // 设置字体和样式
+            ctx.font = '20px Arial';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // 绘制文本
+            ctx.rotate(-Math.PI / 6);
+            ctx.fillText(userInfo, canvas.width / 2, canvas.height / 2);
+
+            // 导出图片数据
+            return canvas.toDataURL('image/png');
+        }
+
+        // 将水印图片设置为背景
+        function applyWatermark() {
+            const userInfo = '用户名: John Doe\nUID: 123456\n手机号: 123-456-7890';
+            const watermarkDataUrl = generateWatermark(userInfo);
+            const watermarkElement = document.getElementById('watermark');
+            watermarkElement.style.backgroundImage = `url(${watermarkDataUrl})`;
+        }
+
+        // 应用水印
+        applyWatermark();
+    </script>
+</body>
+</html>
